@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: restaurant_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: restaurant_management
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes" # Cho phép rỗng
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+
+  api:
+    build:
+      context: ./RestaurantAPI
+      dockerfile: Dockerfile
+    container_name: restaurant_api
+    restart: always
+    ports:
+      - "5126:8080"
+    environment:
+      # SỬA TẠI ĐÂY: Pwd để trống để khớp với DB
+      - ConnectionStrings__DefaultConnection=Server=db;Database=restaurant_management;Uid=root;Pwd=;
+      - RestaurantSettings__DefaultVat=0.1
+      - RestaurantSettings__DefaultServiceFee=0.05
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
