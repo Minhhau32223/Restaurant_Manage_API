@@ -33,7 +33,6 @@ Restaurant_api/
 |   |-- schema.sql
 |   `-- README.md
 |-- RestaurantAPI/
-|   |-- Migrations/
 |   |-- Properties/
 |   |-- src/
 |   |   |-- Contract/
